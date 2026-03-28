@@ -1677,8 +1677,7 @@
     </div>
   </div>
 
-  <script src="https://cdn.jsdelivr.net/npm/emailjs-com@3/dist/email.min.js"></script>
-  <script src="https://cdn.jsdelivr.net/npm/emailjs-com@3/dist/email.min.js"></script>
+ <script src="https://cdn.jsdelivr.net/npm/emailjs-com@3/dist/email.min.js"></script>
 <script>
   (function () {
     emailjs.init("1J7lJnbtUQ1dIJPYc");
@@ -1691,22 +1690,37 @@
     const form = document.getElementById("preorderForm");
     const successMessage = document.getElementById("successMessage");
     const errorMessage = document.getElementById("errorMessage");
+    const helper = form ? form.querySelector(".helper") : null;
+    const submitBtn = form ? form.querySelector(".submit-btn") : null;
 
     const alreadySubmitted = localStorage.getItem("submitted") === "true";
+
+    // 매번 기본 상태 초기화
+    if (form) {
+      form.style.display = "block";
+      form.reset();
+    }
+    if (helper) helper.style.display = "block";
+    if (submitBtn) {
+      submitBtn.style.display = "block";
+      submitBtn.disabled = false;
+      submitBtn.textContent = "사전 예약 완료하기";
+    }
+    successMessage.style.display = "none";
+    errorMessage.style.display = "none";
 
     if (alreadySubmitted) {
       modalTitle.textContent = "이미 사전 예약이 완료되었어요";
       modalDesc.textContent = "베타 출시 시 가장 먼저 안내드릴게요.";
-      form.style.display = "none";
+
+      if (form) form.style.display = "none";
+
       successMessage.style.display = "block";
       successMessage.textContent = "신청 완료 상태입니다. 출시 안내를 기다려주세요 🙌";
       errorMessage.style.display = "none";
     } else {
       modalTitle.textContent = "사전 예약 신청";
       modalDesc.textContent = "간단한 정보만 남겨주시면 베타 출시 시 우선 안내드립니다.";
-      form.style.display = "block";
-      successMessage.style.display = "none";
-      errorMessage.style.display = "none";
     }
 
     overlay.style.display = "flex";
@@ -1735,14 +1749,13 @@
     }
   });
 
-  // ✅ 핵심: submit 처리 (중복 제출 방지 포함)
   document.getElementById("preorderForm").addEventListener("submit", function (e) {
     e.preventDefault();
 
     const alreadySubmitted = localStorage.getItem("submitted") === "true";
-
     const successMessage = document.getElementById("successMessage");
     const errorMessage = document.getElementById("errorMessage");
+    const submitBtn = document.querySelector(".submit-btn");
 
     if (alreadySubmitted) {
       successMessage.style.display = "block";
@@ -1755,8 +1768,6 @@
     const email = document.getElementById("email").value;
     const role = document.getElementById("role").value;
     const message = document.getElementById("comment").value;
-
-    const submitBtn = document.querySelector(".submit-btn");
 
     successMessage.style.display = "none";
     errorMessage.style.display = "none";
@@ -1773,12 +1784,16 @@
     .then(function (response) {
       console.log("EmailJS success:", response);
 
-      // ✅ 성공 시 저장
       localStorage.setItem("submitted", "true");
 
       successMessage.style.display = "block";
       successMessage.textContent = "신청이 완료되었습니다. 출시 시 가장 먼저 안내드리겠습니다.";
       document.getElementById("preorderForm").reset();
+
+      // 버튼 텍스트도 즉시 반영
+      document.querySelectorAll(".btn.btn-primary").forEach((btn) => {
+        btn.textContent = "신청 완료";
+      });
 
       setTimeout(() => {
         closeModal();
@@ -1797,7 +1812,6 @@
     });
   });
 
-  // 애니메이션들 (그대로 유지)
   const revealObserver = new IntersectionObserver((entries) => {
     entries.forEach((entry) => {
       if (entry.isIntersecting) {
@@ -1809,30 +1823,6 @@
 
   document.querySelectorAll(".reveal").forEach((el) => {
     revealObserver.observe(el);
-  });
-
-  window.addEventListener("load", () => {
-    const progressFill = document.getElementById("progressFill");
-    const progressLabel = document.getElementById("progressLabel");
-    const targetProgress = 92;
-
-    if (progressFill) {
-      setTimeout(() => {
-        progressFill.classList.add("animate");
-      }, 450);
-    }
-
-    let currentProgress = 0;
-    const progressTimer = setInterval(() => {
-      currentProgress += 2;
-      if (currentProgress >= targetProgress) {
-        currentProgress = targetProgress;
-        clearInterval(progressTimer);
-      }
-      if (progressLabel) {
-        progressLabel.textContent = currentProgress + "%";
-      }
-    }, 28);
   });
 
   function animateCount(el) {
@@ -1862,6 +1852,78 @@
   document.querySelectorAll(".count").forEach((el) => {
     countObserver.observe(el);
   });
+
+  window.addEventListener("load", () => {
+    const alreadySubmitted = localStorage.getItem("submitted") === "true";
+
+    // CTA 버튼 텍스트 반영
+    if (alreadySubmitted) {
+      document.querySelectorAll(".btn.btn-primary").forEach((btn) => {
+        btn.textContent = "신청 완료";
+      });
+    }
+
+    const progressFill = document.getElementById("progressFill");
+    const progressLabel = document.getElementById("progressLabel");
+    const targetProgress = 92;
+
+    if (progressFill) {
+      setTimeout(() => {
+        progressFill.classList.add("animate");
+      }, 450);
+    }
+
+    let currentProgress = 0;
+    const progressTimer = setInterval(() => {
+      currentProgress += 2;
+      if (currentProgress >= targetProgress) {
+        currentProgress = targetProgress;
+        clearInterval(progressTimer);
+      }
+      if (progressLabel) {
+        progressLabel.textContent = currentProgress + "%";
+      }
+    }, 28);
+
+    // 네가 원래 쓰던 표시 애니메이션 복구
+    const tags = document.querySelectorAll(".line-anim");
+    tags.forEach((tag, index) => {
+      setTimeout(() => {
+        tag.classList.add("show");
+      }, 850 + index * 450);
+    });
+
+    const resultItems = document.querySelectorAll(".result-anim");
+    resultItems.forEach((item, index) => {
+      setTimeout(() => {
+        item.classList.add("show");
+      }, 1200 + index * 280);
+    });
+  });
+
+  const heroVisual = document.getElementById("heroVisual");
+  const mockup = document.getElementById("productMockup");
+
+  if (heroVisual && mockup && window.innerWidth > 1024) {
+    heroVisual.addEventListener("mousemove", (e) => {
+      const rect = heroVisual.getBoundingClientRect();
+      const x = e.clientX - rect.left;
+      const y = e.clientY - rect.top;
+
+      const centerX = rect.width / 2;
+      const centerY = rect.height / 2;
+
+      const rotateY = ((x - centerX) / centerX) * 5;
+      const rotateX = ((centerY - y) / centerY) * 4;
+
+      mockup.style.transform =
+        "perspective(1200px) rotateX(" + rotateX + "deg) rotateY(" + rotateY + "deg) translateY(-2px)";
+    });
+
+    heroVisual.addEventListener("mouseleave", () => {
+      mockup.style.transform = "perspective(1200px) rotateX(0deg) rotateY(0deg) translateY(0)";
+    });
+  }
 </script>
 </body>
 </html>
