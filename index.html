@@ -497,15 +497,14 @@
     }
 
     .line-tag {
-      font-size: 12px;
-      font-weight: 800;
-      border-radius: 999px;
-      padding: 6px 10px;
-      white-space: nowrap;
-      opacity: 0;
-      transform: scale(0.94);
-      transition: opacity 0.35s ease, transform 0.35s ease;
-    }
+  font-size: 12px;
+  font-weight: 800;
+  border-radius: 999px;
+  padding: 6px 10px;
+  white-space: nowrap;
+  opacity: 1;
+  transform: scale(1);
+}
 
     .line-tag.show {
       opacity: 1;
@@ -542,17 +541,16 @@
     }
 
     .result-item {
-      display: flex;
-      align-items: flex-start;
-      gap: 10px;
-      color: var(--text-soft);
-      font-size: 14px;
-      line-height: 1.7;
-      font-weight: 600;
-      opacity: 0;
-      transform: translateY(8px);
-      transition: opacity 0.45s ease, transform 0.45s ease;
-    }
+  display: flex;
+  align-items: flex-start;
+  gap: 10px;
+  color: var(--text-soft);
+  font-size: 14px;
+  line-height: 1.7;
+  font-weight: 600;
+  opacity: 1;
+  transform: translateY(0);
+}
 
     .result-item.show {
       opacity: 1;
@@ -1852,6 +1850,8 @@
   document.querySelectorAll(".count").forEach((el) => {
     countObserver.observe(el);
   });
+
+  
 
   window.addEventListener("load", () => {
     const alreadySubmitted = localStorage.getItem("submitted") === "true";
