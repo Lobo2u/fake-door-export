@@ -1,0 +1,1860 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>LoboDoc | 식품 수출 문서 자동화</title>
+  <link rel="icon" type="image/png" href="https://lobodoc-assets.vercel.app/thumbs_v3.png">
+  <!-- Open Graph (카톡, 슬랙 등) -->
+<meta property="og:title" content="LoboDoc | 식품 수출 문서 자동화" />
+<meta property="og:description" content="복잡한 수출 문서를 한 흐름으로 정리하세요." />
+<meta property="og:image" content="https://lobodoc-assets.vercel.app/thumbs.png" />
+<meta property="og:url" content="https://Lobo2u.github.io/fake-door-export/" />
+<meta property="og:type" content="website" />
+
+<!-- Twitter -->
+<meta name="twitter:card" content="summary_large_image" />
+<meta name="twitter:title" content="LoboDoc" />
+<meta name="twitter:description" content="식품 수출 문서 자동화" />
+<meta name="twitter:image" content="https://lobodoc-assets.vercel.app/thumbs.png" />
+  <style>
+    :root {
+      --bg: #f4f7fc;
+      --bg-soft: #eef4ff;
+      --bg-section: #f8fbff;
+      --card: rgba(255, 255, 255, 0.95);
+      --card-strong: #ffffff;
+      --text: #0f172a;
+      --text-soft: #1e293b;
+      --muted: #475569;
+      --muted-2: #64748b;
+      --line: rgba(15, 23, 42, 0.08);
+      --line-strong: rgba(15, 23, 42, 0.14);
+      --primary: #566dff;
+      --primary-hover: #435ae9;
+      --primary-soft: rgba(86, 109, 255, 0.10);
+      --primary-soft-2: rgba(86, 109, 255, 0.16);
+      --primary-glow: rgba(86, 109, 255, 0.30);
+      --navy: #0f172a;
+      --navy-2: #172554;
+      --success: #16a34a;
+      --success-bg: rgba(22, 163, 74, 0.10);
+      --warn: #d97706;
+      --warn-bg: rgba(245, 158, 11, 0.14);
+      --danger: #dc2626;
+      --danger-bg: rgba(239, 68, 68, 0.12);
+      --shadow: 0 22px 60px rgba(15, 23, 42, 0.10);
+      --shadow-soft: 0 10px 28px rgba(15, 23, 42, 0.06);
+      --shadow-primary: 0 16px 36px rgba(86, 109, 255, 0.22);
+      --radius-xl: 30px;
+      --radius-lg: 24px;
+      --radius-md: 18px;
+      --max: 1160px;
+    }
+
+    * {
+      box-sizing: border-box;
+    }
+
+    html {
+      scroll-behavior: smooth;
+    }
+
+    body {
+      margin: 0;
+      font-family: Inter, "Pretendard", "Noto Sans KR", Arial, sans-serif;
+      color: var(--text);
+      background:
+        radial-gradient(circle at top left, rgba(86, 109, 255, 0.10), transparent 28%),
+        radial-gradient(circle at top right, rgba(56, 189, 248, 0.07), transparent 24%),
+        linear-gradient(180deg, #f9fbff 0%, #f4f7fc 100%);
+      line-height: 1.65;
+      -webkit-font-smoothing: antialiased;
+      text-rendering: optimizeLegibility;
+      word-break: keep-all;
+      overflow-x: hidden;
+    }
+
+    a {
+      color: inherit;
+      text-decoration: none;
+    }
+
+    .wrap {
+  max-width: var(--max);
+  margin: 0 auto;
+  padding: 18px 24px 0;
+}
+
+    .nav {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 10px 0 6px;
+    }
+
+    .brand {
+  display: flex;
+  align-items: center;
+}
+
+   .brand-logo-full {
+  display: block;
+  height: 56px;
+  width: auto;
+  object-fit: contain;
+}
+
+    .nav-menu {
+      display: flex;
+      gap: 22px;
+      align-items: center;
+    }
+
+    .nav-link {
+      color: var(--muted);
+      font-size: 15px;
+      font-weight: 700;
+      transition: color 0.18s ease;
+    }
+
+    .nav-link:hover {
+      color: var(--primary);
+    }
+
+    .hero {
+  display: grid;
+  grid-template-columns: 1.03fr 0.97fr;
+  gap: 24px;
+  align-items: stretch;
+  padding: 6px 0 18px;
+}
+
+    .hero-main,
+    .hero-visual,
+    .workflow-shell,
+    .info-card,
+    .cta-band,
+    .demo-image-shell {
+      background: var(--card);
+      border: 1px solid rgba(255,255,255,0.78);
+      border-radius: var(--radius-xl);
+      box-shadow: var(--shadow);
+      backdrop-filter: blur(10px);
+      -webkit-backdrop-filter: blur(10px);
+    }
+
+    .hero-main {
+      position: relative;
+      overflow: hidden;
+      padding: 42px;
+      isolation: isolate;
+    }
+
+    .hero-main::before {
+      content: "";
+      position: absolute;
+      inset: 0;
+      background:
+        radial-gradient(circle at top right, rgba(86, 109, 255, 0.10), transparent 30%),
+        linear-gradient(180deg, rgba(255,255,255,0.34), rgba(255,255,255,0));
+      pointer-events: none;
+      z-index: -1;
+    }
+
+    .hero-main::after {
+      content: "";
+      position: absolute;
+      width: 320px;
+      height: 320px;
+      right: -120px;
+      bottom: -120px;
+      background: radial-gradient(circle, rgba(86, 109, 255, 0.10), transparent 68%);
+      pointer-events: none;
+      z-index: -1;
+    }
+
+    .hero-visual {
+      padding: 22px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      background:
+        radial-gradient(circle at top left, rgba(86, 109, 255, 0.12), transparent 25%),
+        linear-gradient(180deg, #f8fbff 0%, #f4f8ff 100%);
+      position: relative;
+      overflow: hidden;
+    }
+
+    .hero-visual::before {
+      content: "";
+      position: absolute;
+      width: 280px;
+      height: 280px;
+      top: -80px;
+      right: -60px;
+      background: radial-gradient(circle, rgba(86, 109, 255, 0.12), transparent 65%);
+      pointer-events: none;
+    }
+
+    .mini-pill {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      width: fit-content;
+      padding: 10px 15px;
+      border-radius: 999px;
+      background: rgba(86, 109, 255, 0.10);
+      color: #4b60df;
+      font-size: 14px;
+      font-weight: 800;
+      margin-bottom: 18px;
+    }
+
+    h1 {
+      margin: 0 0 18px;
+      font-size: clamp(2.5rem, 4vw, 4.2rem);
+      line-height: 1.08;
+      letter-spacing: -0.06em;
+      max-width: 700px;
+      color: var(--text);
+    }
+
+    .hero-desc {
+      margin: 0;
+      max-width: 670px;
+      color: var(--text-soft);
+      font-size: 18px;
+      line-height: 1.82;
+      font-weight: 600;
+      letter-spacing: -0.01em;
+    }
+
+    .hero-actions {
+      display: flex;
+      gap: 12px;
+      flex-wrap: wrap;
+      margin-top: 30px;
+    }
+
+    .btn {
+      border: none;
+      border-radius: 16px;
+      padding: 15px 24px;
+      min-height: 54px;
+      font-size: 15px;
+      font-weight: 800;
+      cursor: pointer;
+      transition: transform 0.18s ease, background 0.18s ease, box-shadow 0.18s ease, border-color 0.18s ease;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      letter-spacing: -0.02em;
+      will-change: transform;
+    }
+
+    .btn:hover {
+      transform: translateY(-2px);
+    }
+
+    .btn-primary {
+      background: linear-gradient(135deg, var(--primary), #7a8fff);
+      color: #fff;
+      box-shadow: var(--shadow-primary);
+    }
+
+    .btn-primary:hover {
+      background: linear-gradient(135deg, var(--primary-hover), #6c84ff);
+      box-shadow: 0 18px 40px rgba(86, 109, 255, 0.32);
+    }
+
+    .btn-secondary {
+      background: rgba(255,255,255,0.98);
+      color: var(--text);
+      border: 1px solid var(--line);
+      box-shadow: var(--shadow-soft);
+    }
+
+    .btn-secondary:hover {
+      border-color: var(--line-strong);
+      background: #fff;
+    }
+
+    .hero-meta {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 12px;
+      margin-top: 28px;
+    }
+
+    .meta-chip {
+      padding: 16px 18px;
+      border-radius: 18px;
+      background: rgba(255,255,255,0.90);
+      border: 1px solid var(--line);
+      box-shadow: var(--shadow-soft);
+      transition: transform 0.25s ease, box-shadow 0.25s ease;
+    }
+
+    .meta-chip:hover {
+      transform: translateY(-4px);
+      box-shadow: 0 16px 32px rgba(15, 23, 42, 0.08);
+    }
+
+    .meta-label {
+      font-size: 13px;
+      color: var(--muted-2);
+      margin-bottom: 6px;
+      font-weight: 700;
+    }
+
+    .meta-value {
+      font-size: 1.05rem;
+      font-weight: 800;
+      line-height: 1.42;
+      letter-spacing: -0.03em;
+      color: var(--text);
+    }
+
+    .product-mockup {
+      width: 100%;
+      max-width: 470px;
+      background: #fff;
+      border: 1px solid rgba(15, 23, 42, 0.08);
+      border-radius: 28px;
+      overflow: hidden;
+      box-shadow: 0 24px 50px rgba(15, 23, 42, 0.10);
+      transform: perspective(1200px) rotateX(0deg) rotateY(0deg) translateY(0);
+      transition: transform 0.18s ease-out;
+      will-change: transform;
+    }
+
+    .mockup-topbar {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 14px 16px;
+      background: linear-gradient(180deg, #fbfdff 0%, #f5f8fe 100%);
+      border-bottom: 1px solid var(--line);
+    }
+
+    .mockup-title {
+      font-size: 14px;
+      font-weight: 800;
+      color: var(--text);
+    }
+
+    .mockup-badge {
+      font-size: 12px;
+      font-weight: 800;
+      color: #4b60df;
+      background: rgba(86, 109, 255, 0.10);
+      padding: 6px 10px;
+      border-radius: 999px;
+    }
+
+    .mockup-tabs {
+      display: flex;
+      gap: 8px;
+      padding: 12px 16px 0;
+      background: linear-gradient(180deg, #ffffff 0%, #fbfcff 100%);
+    }
+
+    .mockup-tab {
+      padding: 8px 12px;
+      border-radius: 999px;
+      font-size: 12px;
+      font-weight: 800;
+      color: var(--muted);
+      background: #f3f6fb;
+      border: 1px solid rgba(15,23,42,0.05);
+      transition: all 0.25s ease;
+    }
+
+    .mockup-tab.active {
+      color: var(--primary);
+      background: rgba(86, 109, 255, 0.10);
+      border-color: rgba(86, 109, 255, 0.12);
+      box-shadow: inset 0 0 0 1px rgba(86, 109, 255, 0.04);
+    }
+
+    .mockup-progress-wrap {
+      padding: 12px 16px 0;
+      background: #fff;
+    }
+
+    .mockup-progress-head {
+      display: flex;
+      justify-content: space-between;
+      gap: 12px;
+      align-items: center;
+      margin-bottom: 8px;
+      font-size: 12px;
+      color: var(--muted);
+      font-weight: 700;
+    }
+
+    .mockup-progress-bar {
+      height: 8px;
+      border-radius: 999px;
+      background: #edf2f9;
+      overflow: hidden;
+    }
+
+    .mockup-progress-fill {
+      width: 0;
+      height: 100%;
+      border-radius: inherit;
+      background: linear-gradient(90deg, #5a70ff 0%, #8ca0ff 100%);
+      transition: width 1.5s cubic-bezier(0.22, 1, 0.36, 1);
+      position: relative;
+      overflow: hidden;
+    }
+
+    .mockup-progress-fill::after {
+      content: "";
+      position: absolute;
+      inset: 0;
+      background: linear-gradient(90deg, transparent, rgba(255,255,255,0.45), transparent);
+      transform: translateX(-100%);
+      animation: shimmer 2.2s infinite;
+    }
+
+    .mockup-progress-fill.animate {
+      width: 92%;
+    }
+
+    .mockup-body {
+      padding: 16px;
+      display: grid;
+      gap: 14px;
+      background: linear-gradient(180deg, #ffffff 0%, #f8fbff 100%);
+    }
+
+    .doc-card,
+    .result-card,
+    .summary-card {
+      border: 1px solid var(--line);
+      border-radius: 18px;
+      background: #fff;
+      box-shadow: var(--shadow-soft);
+      padding: 16px;
+      transition: transform 0.25s ease, box-shadow 0.25s ease;
+    }
+
+    .doc-card:hover,
+    .result-card:hover,
+    .summary-card:hover {
+      transform: translateY(-3px);
+      box-shadow: 0 16px 34px rgba(15, 23, 42, 0.07);
+    }
+
+    .doc-head {
+      display: flex;
+      justify-content: space-between;
+      gap: 12px;
+      align-items: center;
+      margin-bottom: 12px;
+    }
+
+    .doc-file {
+      font-size: 15px;
+      font-weight: 800;
+      color: var(--text);
+      line-height: 1.45;
+    }
+
+    .doc-status {
+      font-size: 12px;
+      font-weight: 800;
+      color: var(--success);
+      background: var(--success-bg);
+      padding: 6px 10px;
+      border-radius: 999px;
+      white-space: nowrap;
+    }
+
+    .doc-lines {
+      display: grid;
+      gap: 10px;
+    }
+
+    .doc-line {
+      display: flex;
+      justify-content: space-between;
+      gap: 12px;
+      align-items: center;
+      padding-bottom: 10px;
+      border-bottom: 1px dashed rgba(15,23,42,0.08);
+      font-size: 14px;
+      color: var(--muted);
+      font-weight: 600;
+    }
+
+    .doc-line:last-child {
+      border-bottom: none;
+      padding-bottom: 0;
+    }
+
+    .line-tag {
+      font-size: 12px;
+      font-weight: 800;
+      border-radius: 999px;
+      padding: 6px 10px;
+      white-space: nowrap;
+      opacity: 0;
+      transform: scale(0.94);
+      transition: opacity 0.35s ease, transform 0.35s ease;
+    }
+
+    .line-tag.show {
+      opacity: 1;
+      transform: scale(1);
+    }
+
+    .tag-ok {
+      color: var(--success);
+      background: var(--success-bg);
+    }
+
+    .tag-warn {
+      color: var(--warn);
+      background: var(--warn-bg);
+    }
+
+    .tag-danger {
+      color: var(--danger);
+      background: var(--danger-bg);
+    }
+
+    .result-card h3,
+    .summary-card h3 {
+      margin: 0 0 12px;
+      font-size: 16px;
+      line-height: 1.4;
+      letter-spacing: -0.03em;
+      color: var(--text);
+    }
+
+    .result-list {
+      display: grid;
+      gap: 10px;
+    }
+
+    .result-item {
+      display: flex;
+      align-items: flex-start;
+      gap: 10px;
+      color: var(--text-soft);
+      font-size: 14px;
+      line-height: 1.7;
+      font-weight: 600;
+      opacity: 0;
+      transform: translateY(8px);
+      transition: opacity 0.45s ease, transform 0.45s ease;
+    }
+
+    .result-item.show {
+      opacity: 1;
+      transform: translateY(0);
+    }
+
+    .result-dot {
+      width: 20px;
+      height: 20px;
+      border-radius: 999px;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      flex: 0 0 20px;
+      background: rgba(86, 109, 255, 0.10);
+      color: var(--primary);
+      font-size: 11px;
+      font-weight: 900;
+      margin-top: 1px;
+    }
+
+    .summary-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 10px;
+    }
+
+    .summary-pill {
+      padding: 12px;
+      border-radius: 14px;
+      background: #f8fbff;
+      border: 1px solid rgba(15,23,42,0.06);
+      transition: transform 0.25s ease, background 0.25s ease;
+    }
+
+    .summary-pill:hover {
+      transform: translateY(-2px);
+      background: #f4f8ff;
+    }
+
+    .summary-num {
+      display: block;
+      font-size: 1.15rem;
+      font-weight: 900;
+      letter-spacing: -0.04em;
+      color: var(--text);
+      margin-bottom: 4px;
+    }
+
+    .summary-label {
+      font-size: 12px;
+      color: var(--muted-2);
+      font-weight: 700;
+      line-height: 1.4;
+    }
+
+    .demo-image-section {
+      margin: 14px 0 28px;
+    }
+
+    .demo-image-shell {
+      padding: 16px;
+      overflow: hidden;
+      position: relative;
+    }
+
+    .demo-image-shell::before {
+      content: "";
+      position: absolute;
+      inset: 0;
+      background:
+        radial-gradient(circle at top right, rgba(86, 109, 255, 0.08), transparent 28%),
+        linear-gradient(180deg, rgba(255,255,255,0.26), rgba(255,255,255,0));
+      pointer-events: none;
+    }
+
+    .demo-copy {
+      position: relative;
+      z-index: 1;
+      display: flex;
+      justify-content: space-between;
+      align-items: end;
+      gap: 24px;
+      margin-bottom: 18px;
+      flex-wrap: wrap;
+    }
+
+    .demo-copy h2 {
+      margin: 0;
+      font-size: clamp(1.8rem, 2.5vw, 2.4rem);
+      line-height: 1.2;
+      letter-spacing: -0.05em;
+      color: var(--text);
+    }
+
+    .demo-copy p {
+      margin: 0;
+      max-width: 520px;
+      color: var(--muted);
+      font-size: 16px;
+      line-height: 1.8;
+      font-weight: 600;
+    }
+
+    .demo-image {
+      display: block;
+      width: 100%;
+      border-radius: 22px;
+      border: 1px solid rgba(15, 23, 42, 0.06);
+      box-shadow: 0 28px 56px rgba(15, 23, 42, 0.12);
+      position: relative;
+      z-index: 1;
+    }
+
+    .proof-band {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 10px;
+      margin: 0 0 22px;
+    }
+
+    .proof-chip {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      padding: 11px 14px;
+      border-radius: 999px;
+      background: rgba(255,255,255,0.82);
+      border: 1px solid rgba(15, 23, 42, 0.08);
+      box-shadow: var(--shadow-soft);
+      color: var(--text-soft);
+      font-size: 14px;
+      font-weight: 700;
+      transition: transform 0.25s ease, box-shadow 0.25s ease;
+    }
+
+    .proof-chip:hover {
+      transform: translateY(-3px);
+      box-shadow: 0 14px 26px rgba(15, 23, 42, 0.08);
+    }
+
+    .proof-chip::before {
+      content: "";
+      width: 8px;
+      height: 8px;
+      border-radius: 999px;
+      background: linear-gradient(135deg, var(--primary), #89a0ff);
+      box-shadow: 0 0 0 4px rgba(86, 109, 255, 0.08);
+      flex: 0 0 8px;
+    }
+
+    .workflow-shell {
+      padding: 32px;
+      margin-top: 8px;
+      background:
+        linear-gradient(180deg, #fbfdff 0%, #f7faff 100%);
+    }
+
+    .section-header {
+      display: grid;
+      grid-template-columns: 0.95fr 1.05fr;
+      gap: 28px;
+      align-items: start;
+      margin-bottom: 24px;
+    }
+
+    .section-header h2 {
+      margin: 0;
+      font-size: clamp(2rem, 3vw, 3rem);
+      line-height: 1.18;
+      letter-spacing: -0.05em;
+      color: var(--text);
+    }
+
+    .section-header p {
+      margin: 0;
+      color: var(--muted);
+      font-size: 16px;
+      line-height: 1.9;
+      font-weight: 600;
+    }
+
+    .flow-grid {
+      display: grid;
+      grid-template-columns: 1fr auto 1fr auto 1fr;
+      gap: 14px;
+      align-items: stretch;
+    }
+
+    .flow-card {
+      padding: 24px;
+      border-radius: 24px;
+      background: #ffffff;
+      border: 1px solid rgba(15, 23, 42, 0.08);
+      box-shadow: var(--shadow-soft);
+      position: relative;
+      transition: transform 0.3s ease, box-shadow 0.3s ease;
+    }
+
+    .flow-card:hover {
+      transform: translateY(-4px);
+      box-shadow: 0 18px 36px rgba(15, 23, 42, 0.08);
+    }
+
+    .flow-card.is-focus {
+      background: linear-gradient(180deg, #ffffff 0%, #f6f8ff 100%);
+      border: 1px solid rgba(86, 109, 255, 0.22);
+      box-shadow: 0 18px 40px rgba(86, 109, 255, 0.10);
+    }
+
+    .focus-badge {
+      position: absolute;
+      top: 18px;
+      right: 18px;
+      padding: 6px 10px;
+      border-radius: 999px;
+      font-size: 12px;
+      font-weight: 800;
+      color: var(--primary);
+      background: rgba(86, 109, 255, 0.10);
+      border: 1px solid rgba(86, 109, 255, 0.10);
+    }
+
+    .flow-step {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      width: 34px;
+      height: 34px;
+      border-radius: 999px;
+      background: rgba(86, 109, 255, 0.10);
+      color: var(--primary);
+      font-size: 14px;
+      font-weight: 900;
+      margin-bottom: 14px;
+    }
+
+    .flow-card h3 {
+      margin: 0 0 12px;
+      font-size: 1.35rem;
+      line-height: 1.3;
+      letter-spacing: -0.04em;
+      color: var(--text);
+    }
+
+    .flow-list {
+      display: grid;
+      gap: 10px;
+    }
+
+    .flow-list-item {
+      padding: 14px 14px;
+      border-radius: 16px;
+      background: #f7faff;
+      border: 1px solid rgba(15,23,42,0.06);
+      color: var(--text-soft);
+      font-size: 15px;
+      line-height: 1.65;
+      font-weight: 700;
+      transition: transform 0.25s ease, background 0.25s ease;
+    }
+
+    .flow-list-item:hover {
+      transform: translateX(2px);
+      background: #f2f7ff;
+    }
+
+    .flow-card.is-focus .flow-list-item {
+      background: rgba(86, 109, 255, 0.06);
+      border-color: rgba(86, 109, 255, 0.10);
+    }
+
+    .flow-arrow {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 28px;
+      color: #8fa1c0;
+      font-weight: 800;
+      padding: 0 4px;
+      animation: arrowPulse 2.2s ease-in-out infinite;
+    }
+
+    .info-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 18px;
+      margin-top: 22px;
+    }
+
+    .info-card {
+      padding: 28px;
+      background: rgba(255,255,255,0.92);
+      box-shadow: 0 14px 40px rgba(15, 23, 42, 0.05);
+      transition: transform 0.3s ease, box-shadow 0.3s ease;
+    }
+
+    .info-card:hover {
+      transform: translateY(-5px);
+      box-shadow: 0 20px 40px rgba(15, 23, 42, 0.08);
+    }
+
+    .info-card h3 {
+      margin: 0 0 10px;
+      font-size: 1.36rem;
+      line-height: 1.3;
+      letter-spacing: -0.04em;
+      color: var(--text);
+    }
+
+    .info-card p {
+      margin: 0 0 16px;
+      color: var(--muted);
+      font-size: 15px;
+      line-height: 1.8;
+      font-weight: 600;
+    }
+
+    .mini-list {
+      display: grid;
+      gap: 10px;
+    }
+
+    .mini-item {
+      border-radius: 16px;
+      padding: 14px 14px;
+      background: #ffffff;
+      border: 1px solid rgba(15,23,42,0.08);
+      color: var(--text-soft);
+      font-size: 14px;
+      line-height: 1.7;
+      font-weight: 700;
+      transition: transform 0.25s ease, border-color 0.25s ease;
+    }
+
+    .mini-item:hover {
+      transform: translateX(2px);
+      border-color: rgba(86, 109, 255, 0.18);
+    }
+
+    .cta-band {
+      margin: 24px 0 40px;
+      padding: 34px 30px;
+      background:
+        radial-gradient(circle at right center, rgba(86, 109, 255, 0.26), transparent 24%),
+        linear-gradient(135deg, #0f172a, #172554 54%, #111827);
+      color: white;
+      box-shadow: 0 24px 60px rgba(15, 23, 42, 0.22);
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 18px;
+      flex-wrap: wrap;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .cta-band::before {
+      content: "";
+      position: absolute;
+      width: 380px;
+      height: 380px;
+      right: -120px;
+      top: -120px;
+      background: radial-gradient(circle, rgba(122, 143, 255, 0.18), transparent 62%);
+      pointer-events: none;
+    }
+
+    .cta-copy {
+      position: relative;
+      z-index: 1;
+    }
+
+    .cta-copy h3 {
+      margin: 0 0 8px;
+      font-size: 2rem;
+      line-height: 1.2;
+      letter-spacing: -0.04em;
+      color: #fff;
+    }
+
+    .cta-copy p {
+      margin: 0;
+      color: rgba(255,255,255,0.88);
+      font-size: 16px;
+      line-height: 1.75;
+      font-weight: 500;
+    }
+
+    .cta-tags {
+      display: flex;
+      gap: 10px;
+      flex-wrap: wrap;
+      margin-top: 14px;
+    }
+
+    .cta-tag {
+      padding: 8px 12px;
+      border-radius: 999px;
+      background: rgba(255,255,255,0.10);
+      border: 1px solid rgba(255,255,255,0.14);
+      font-size: 13px;
+      font-weight: 700;
+      color: rgba(255,255,255,0.93);
+      backdrop-filter: blur(6px);
+    }
+
+    .cta-band .btn-primary {
+      min-width: 184px;
+      min-height: 60px;
+      font-size: 17px;
+      box-shadow: 0 18px 36px rgba(86, 109, 255, 0.36);
+      position: relative;
+      z-index: 1;
+    }
+
+    .footer {
+      text-align: center;
+      color: var(--muted);
+      font-size: 15px;
+      font-weight: 500;
+      padding: 8px 0 34px;
+    }
+
+    .modal-overlay {
+      position: fixed;
+      inset: 0;
+      display: none;
+      justify-content: center;
+      align-items: center;
+      background: rgba(10, 15, 25, 0.58);
+      backdrop-filter: blur(8px);
+      padding: 20px;
+      z-index: 1000;
+      opacity: 0;
+      transition: opacity 0.2s ease;
+    }
+
+    .modal-overlay.open {
+      opacity: 1;
+    }
+
+    .modal {
+      width: 100%;
+      max-width: 520px;
+      background: rgba(255,255,255,0.98);
+      border: 1px solid rgba(255,255,255,0.75);
+      border-radius: 28px;
+      box-shadow: 0 24px 60px rgba(0,0,0,0.22);
+      padding: 28px;
+      position: relative;
+      animation: modalUp 0.22s ease-out;
+    }
+
+    @keyframes modalUp {
+      from { opacity: 0; transform: translateY(12px) scale(0.98); }
+      to { opacity: 1; transform: translateY(0) scale(1); }
+    }
+
+    .close-btn {
+      position: absolute;
+      top: 16px;
+      right: 16px;
+      width: 38px;
+      height: 38px;
+      border: none;
+      border-radius: 999px;
+      background: rgba(15,23,42,0.06);
+      color: #334155;
+      font-size: 22px;
+      cursor: pointer;
+      transition: background 0.18s ease, transform 0.18s ease;
+    }
+
+    .close-btn:hover {
+      background: rgba(15,23,42,0.10);
+      transform: rotate(90deg);
+    }
+
+    .modal h3 {
+      margin: 0 0 8px;
+      font-size: 28px;
+      line-height: 1.2;
+      letter-spacing: -0.04em;
+      color: var(--text);
+    }
+
+    .modal p {
+      margin: 0 0 20px;
+      color: var(--muted);
+      font-size: 15px;
+      line-height: 1.7;
+      font-weight: 500;
+    }
+
+    .form-grid {
+      display: grid;
+      gap: 14px;
+    }
+
+    .field label {
+      display: block;
+      margin-bottom: 8px;
+      font-size: 14px;
+      font-weight: 700;
+      color: #334155;
+    }
+
+    .field input,
+    .field select,
+    .field textarea {
+      width: 100%;
+      border: 1px solid rgba(15,23,42,0.10);
+      background: #ffffff;
+      border-radius: 16px;
+      padding: 14px;
+      font-size: 15px;
+      color: var(--text);
+      outline: none;
+      transition: border-color 0.16s ease, box-shadow 0.16s ease, transform 0.16s ease;
+    }
+
+    .field input::placeholder,
+    .field textarea::placeholder {
+      color: #94a3b8;
+    }
+
+    .field input:focus,
+    .field select:focus,
+    .field textarea:focus {
+      border-color: rgba(86, 109, 255, 0.38);
+      box-shadow: 0 0 0 4px rgba(86, 109, 255, 0.10);
+      transform: translateY(-1px);
+    }
+
+    .field textarea {
+      min-height: 110px;
+      resize: vertical;
+    }
+
+    .submit-btn {
+      width: 100%;
+      margin-top: 8px;
+      padding: 15px 18px;
+      border: none;
+      border-radius: 18px;
+      background: linear-gradient(135deg, var(--primary), #7a8fff);
+      color: white;
+      font-size: 15px;
+      font-weight: 800;
+      cursor: pointer;
+      box-shadow: 0 14px 28px rgba(86, 109, 255, 0.22);
+      transition: transform 0.18s ease, background 0.18s ease, box-shadow 0.18s ease;
+    }
+
+    .submit-btn:hover {
+      transform: translateY(-1px);
+      background: linear-gradient(135deg, var(--primary-hover), #6c84ff);
+      box-shadow: 0 18px 32px rgba(86, 109, 255, 0.28);
+    }
+
+    .submit-btn:disabled {
+      opacity: 0.7;
+      cursor: not-allowed;
+      transform: none;
+    }
+
+    .helper {
+      font-size: 14px;
+      color: var(--muted);
+      margin-top: 10px;
+      text-align: center;
+      line-height: 1.7;
+      font-weight: 500;
+    }
+
+    .success-message,
+    .error-message {
+      display: none;
+      margin-top: 14px;
+      border-radius: 16px;
+      padding: 13px 14px;
+      font-size: 14px;
+      line-height: 1.6;
+      font-weight: 600;
+    }
+
+    .success-message {
+      background: #ecfdf5;
+      color: #065f46;
+    }
+
+    .error-message {
+      background: #fef2f2;
+      color: #991b1b;
+    }
+
+    .reveal {
+      opacity: 0;
+      transform: translateY(28px);
+      transition: opacity 0.75s cubic-bezier(0.22, 1, 0.36, 1),
+                  transform 0.75s cubic-bezier(0.22, 1, 0.36, 1);
+      will-change: opacity, transform;
+    }
+
+    .reveal.show {
+      opacity: 1;
+      transform: translateY(0);
+    }
+
+    .reveal-delay-1 { transition-delay: 0.06s; }
+    .reveal-delay-2 { transition-delay: 0.14s; }
+    .reveal-delay-3 { transition-delay: 0.22s; }
+    .reveal-delay-4 { transition-delay: 0.30s; }
+
+    .floating-orb {
+      position: fixed;
+      width: 220px;
+      height: 220px;
+      border-radius: 50%;
+      background: radial-gradient(circle, rgba(86,109,255,0.08), transparent 68%);
+      pointer-events: none;
+      filter: blur(6px);
+      z-index: -1;
+      animation: floatOrb 10s ease-in-out infinite;
+    }
+
+    .floating-orb.orb-1 {
+      top: 10%;
+      left: -60px;
+    }
+
+    .floating-orb.orb-2 {
+      bottom: 14%;
+      right: -70px;
+      animation-delay: -4s;
+    }
+
+    @keyframes floatOrb {
+      0%, 100% { transform: translateY(0px) translateX(0px); }
+      50% { transform: translateY(-16px) translateX(8px); }
+    }
+
+    @keyframes shimmer {
+      0% { transform: translateX(-100%); }
+      100% { transform: translateX(120%); }
+    }
+
+    @keyframes arrowPulse {
+      0%, 100% { opacity: 0.5; transform: translateX(0); }
+      50% { opacity: 1; transform: translateX(4px); }
+    }
+
+    @media (prefers-reduced-motion: reduce) {
+      *,
+      *::before,
+      *::after {
+        animation: none !important;
+        transition: none !important;
+        scroll-behavior: auto !important;
+      }
+
+      .reveal,
+      .line-tag,
+      .result-item {
+        opacity: 1 !important;
+        transform: none !important;
+      }
+
+      .mockup-progress-fill {
+        width: 92% !important;
+      }
+    }
+
+    @media (max-width: 1024px) {
+      .hero {
+        grid-template-columns: 1fr;
+      }
+
+      .section-header,
+      .demo-copy {
+        grid-template-columns: 1fr;
+      }
+
+      .flow-grid {
+        grid-template-columns: 1fr;
+      }
+
+      .flow-arrow {
+        transform: rotate(90deg);
+        min-height: 26px;
+      }
+
+      .info-grid {
+        grid-template-columns: repeat(2, 1fr);
+      }
+
+      .hero-meta {
+        grid-template-columns: 1fr;
+      }
+
+      .product-mockup {
+        transform: none !important;
+      }
+    }
+
+    @media (max-width: 680px) {
+      .wrap {
+        padding: 18px 18px 0;
+      }
+
+      .nav {
+        padding-bottom: 14px;
+      }
+
+      .nav-menu {
+        gap: 12px;
+      }
+
+      .hero-main,
+      .hero-visual,
+      .workflow-shell,
+      .info-card,
+      .cta-band,
+      .modal,
+      .demo-image-shell {
+        border-radius: 22px;
+      }
+
+      .hero-main {
+        padding: 28px 20px;
+      }
+
+      .hero-visual {
+        padding: 14px;
+      }
+
+      h1 {
+        font-size: 2.35rem;
+        line-height: 1.12;
+      }
+
+      .hero-desc,
+      .section-header p,
+      .info-card p,
+      .cta-copy p,
+      .demo-copy p,
+      .footer {
+        font-size: 15px;
+      }
+
+      .hero-actions {
+        flex-direction: column;
+      }
+
+      .hero-actions .btn,
+      .cta-band .btn {
+        width: 100%;
+      }
+
+      .summary-grid,
+      .info-grid {
+        grid-template-columns: 1fr;
+      }
+
+      .workflow-shell,
+      .info-card {
+        padding: 22px;
+      }
+
+      .cta-band {
+        padding: 24px 22px;
+      }
+
+      .cta-copy h3 {
+        font-size: 24px;
+      }
+
+      .mockup-topbar {
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 8px;
+      }
+
+      .mockup-tabs {
+        flex-wrap: wrap;
+      }
+
+      .proof-band {
+        gap: 8px;
+      }
+
+      .proof-chip {
+        width: 100%;
+        justify-content: flex-start;
+      }
+
+      .floating-orb {
+        display: none;
+      }
+
+      .demo-image-shell {
+        padding: 12px;
+      }
+
+      .demo-image {
+        border-radius: 18px;
+      }
+    }
+  </style>
+</head>
+<body>
+  <div class="floating-orb orb-1"></div>
+  <div class="floating-orb orb-2"></div>
+
+  <div class="wrap">
+    <header class="nav">
+      <div class="brand">
+  <img src="https://lobodoc-assets.vercel.app/fake_logo.png" alt="LoboDoc 로고" class="brand-logo-full" />
+</div>
+
+      <div class="nav-menu">
+        <a class="nav-link" href="#workflow">작동 방식</a>
+        <a class="nav-link" href="#features">기능 보기</a>
+      </div>
+    </header>
+
+    <section class="hero">
+      <div class="hero-main reveal">
+        <div class="mini-pill">베타 신청자 우선 안내 중</div>
+        <h1>식품 수출 문서 대응,<br>이제 규정부터 다시 찾지 마세요</h1>
+        <p class="hero-desc">
+          국가별 식품 및 건강기능식품 관련 기준, 바이어별 요구 형식, 반복적인 문서 수정.
+          수출 실무에서 번거로운 과정을 문서 업로드부터 확인 포인트 정리까지 한 흐름으로 정리합니다.
+        </p>
+
+        <div class="hero-actions">
+          <button class="btn btn-primary" onclick="openModal()">사전 예약하기</button>
+          <a class="btn btn-secondary" href="#workflow">작동 방식 보기</a>
+        </div>
+
+        <div class="hero-meta">
+          <div class="meta-chip">
+            <div class="meta-label">핵심 가치</div>
+            <div class="meta-value">반복 재작업 감소</div>
+          </div>
+          <div class="meta-chip">
+            <div class="meta-label">정리 방식</div>
+            <div class="meta-value">문서 기준 항목 정리</div>
+          </div>
+          <div class="meta-chip">
+            <div class="meta-label">결과물</div>
+            <div class="meta-value">수정 포인트와 대응 가이드</div>
+          </div>
+        </div>
+      </div>
+
+      <div class="hero-visual reveal reveal-delay-1" id="heroVisual">
+        <div class="product-mockup" id="productMockup">
+          <div class="mockup-topbar">
+            <div class="mockup-title">LoboDoc 자동 정리 화면</div>
+            <div class="mockup-badge">베타 프리뷰</div>
+          </div>
+
+          <div class="mockup-tabs">
+            <div class="mockup-tab active">문서 분석</div>
+            <div class="mockup-tab">항목 정리</div>
+            <div class="mockup-tab">가이드</div>
+          </div>
+
+          <div class="mockup-progress-wrap">
+            <div class="mockup-progress-head">
+              <span>문서 분석 완료</span>
+              <span id="progressLabel">0%</span>
+            </div>
+            <div class="mockup-progress-bar">
+              <div class="mockup-progress-fill" id="progressFill"></div>
+            </div>
+          </div>
+
+          <div class="mockup-body">
+            <div class="doc-card">
+              <div class="doc-head">
+                <div class="doc-file">수출용 제품 설명서_v3.pdf</div>
+                <div class="doc-status">업로드 완료</div>
+              </div>
+
+              <div class="doc-lines">
+                <div class="doc-line">
+                  <span>원산지 표기</span>
+                  <span class="line-tag tag-ok line-anim">확인됨</span>
+                </div>
+                <div class="doc-line">
+                  <span>성분명 표기 형식</span>
+                  <span class="line-tag tag-warn line-anim">확인 필요</span>
+                </div>
+                <div class="doc-line">
+                  <span>제출 양식</span>
+                  <span class="line-tag tag-danger line-anim">누락</span>
+                </div>
+              </div>
+            </div>
+
+            <div class="result-card">
+              <h3>정리 결과</h3>
+              <div class="result-list">
+                <div class="result-item result-anim">
+                  <span class="result-dot">✓</span>
+                  <span>문서 내 주요 항목 7개 정리</span>
+                </div>
+                <div class="result-item result-anim">
+                  <span class="result-dot">!</span>
+                  <span>확인 필요한 항목 2건 표시</span>
+                </div>
+                <div class="result-item result-anim">
+                  <span class="result-dot">→</span>
+                  <span>다음 대응에 필요한 가이드 제안</span>
+                </div>
+              </div>
+            </div>
+
+            <div class="summary-card">
+              <h3>요약</h3>
+              <div class="summary-grid">
+                <div class="summary-pill">
+                  <span class="summary-num count" data-target="7">0</span>
+                  <span class="summary-label">정리 항목</span>
+                </div>
+                <div class="summary-pill">
+                  <span class="summary-num count" data-target="2">0</span>
+                  <span class="summary-label">확인 필요</span>
+                </div>
+                <div class="summary-pill">
+                  <span class="summary-num count" data-target="1">0</span>
+                  <span class="summary-label">누락 항목</span>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section class="demo-image-section reveal">
+      <div class="demo-image-shell">
+        <div class="demo-copy">
+          <div>
+            <h2>결과가 어떻게 보이는지<br>먼저 확인해보세요</h2>
+          </div>
+          <p>
+            문서를 올리면 무엇이 정리되고, 어디를 먼저 확인해야 하는지
+            한 화면에서 바로 볼 수 있도록 구성합니다.
+          </p>
+        </div>
+        <img
+          src="https://lobodoc-assets.vercel.app/demo.png"
+          alt="LoboDoc 제품 데모 화면"
+          class="demo-image"
+        />
+      </div>
+    </section>
+
+    <div class="proof-band reveal">
+      <span class="proof-chip">국가별 기준 비교</span>
+      <span class="proof-chip">바이어 요구 항목 정리</span>
+      <span class="proof-chip">수정 포인트 요약</span>
+      <span class="proof-chip">대응 가이드 생성</span>
+    </div>
+
+    <section class="workflow-shell reveal" id="workflow">
+      <div class="section-header">
+        <div>
+          <h2>복잡한 수출 문서를<br>한 흐름으로 정리합니다</h2>
+        </div>
+        <p>
+          지금은 국가 기준, 바이어 요청, 기존 자료를 따로 확인하느라 시간이 새고 있습니다.
+          LoboDoc은 입력 자료를 기준으로 확인 포인트를 정리하고 대응 방향까지 이어줍니다.
+        </p>
+      </div>
+
+      <div class="flow-grid">
+        <div class="flow-card reveal reveal-delay-1">
+          <div class="flow-step">1</div>
+          <h3>입력 자료</h3>
+          <div class="flow-list">
+            <div class="flow-list-item">바이어 요청서</div>
+            <div class="flow-list-item">기존 수출 서류</div>
+            <div class="flow-list-item">국가별 기준 참고 문서</div>
+          </div>
+        </div>
+
+        <div class="flow-arrow reveal reveal-delay-2">→</div>
+
+        <div class="flow-card is-focus reveal reveal-delay-2">
+          <div class="focus-badge">핵심 자동화</div>
+          <div class="flow-step">2</div>
+          <h3>자동 정리</h3>
+          <div class="flow-list">
+            <div class="flow-list-item">핵심 항목 자동 추출</div>
+            <div class="flow-list-item">항목 정리 및 표시</div>
+            <div class="flow-list-item">확인 필요한 항목 표시</div>
+          </div>
+        </div>
+
+        <div class="flow-arrow reveal reveal-delay-3">→</div>
+
+        <div class="flow-card reveal reveal-delay-3">
+          <div class="flow-step">3</div>
+          <h3>결과 정리</h3>
+          <div class="flow-list">
+            <div class="flow-list-item">수정 필요 항목 우선순위화</div>
+            <div class="flow-list-item">제출 전 체크포인트 정리</div>
+            <div class="flow-list-item">대응 가이드 제안</div>
+          </div>
+        </div>
+      </div>
+
+      <div class="info-grid" id="features">
+        <div class="info-card reveal reveal-delay-1">
+          <h3>왜 어려운가</h3>
+          <p>
+            같은 제품이라도 국가별 제출 기준과 표기 방식이 달라,
+            늘 다시 확인하는 구조가 생깁니다.
+          </p>
+          <div class="mini-list">
+            <div class="mini-item">국가마다 제출 서류와 요구 형식이 다름</div>
+            <div class="mini-item">자료는 있어도 재활용이 어려워 반복 수정 발생</div>
+          </div>
+        </div>
+
+        <div class="info-card reveal reveal-delay-2">
+          <h3>무엇을 도와주나</h3>
+          <p>
+            문서 안에 흩어진 항목을 모으고,
+            필요한 확인 포인트를 한 화면에서 볼 수 있게 정리합니다.
+          </p>
+          <div class="mini-list">
+            <div class="mini-item">문서 업로드 후 핵심 정보 자동 분류</div>
+            <div class="mini-item">항목 정리 및 확인 기준 제공</div>
+          </div>
+        </div>
+
+        <div class="info-card reveal reveal-delay-3">
+          <h3>무엇이 달라지나</h3>
+          <p>
+            담당자는 전체 문서를 다시 읽는 대신,
+            수정해야 할 포인트와 우선순위를 먼저 확인할 수 있습니다.
+          </p>
+          <div class="mini-list">
+            <div class="mini-item">확인 필요한 항목 한눈에 보기</div>
+            <div class="mini-item">대응 가이드 기반 재작업 시간 단축</div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section class="cta-band reveal">
+      <div class="cta-copy">
+        <h3>베타 출시 전에 먼저 받아보세요</h3>
+        <p>사전 예약을 남겨주시면 출시 시 가장 먼저 안내드립니다.</p>
+        <div class="cta-tags">
+          <span class="cta-tag">출시 알림 우선 안내</span>
+          <span class="cta-tag">초기 사용자 피드백 참여</span>
+          <span class="cta-tag">베타 기능 먼저 확인</span>
+        </div>
+      </div>
+
+      <button class="btn btn-primary" onclick="openModal()">사전 예약하기</button>
+    </section>
+
+    <div class="footer">
+      LoboDoc · 실제 수출 현장의 반복 업무를 줄이기 위해 준비 중인 서비스입니다.
+    </div>
+  </div>
+
+  <div id="modalOverlay" class="modal-overlay" onclick="handleOverlayClick(event)">
+    <div class="modal">
+      <button class="close-btn" onclick="closeModal()" aria-label="닫기">&times;</button>
+      <h3>사전 예약 신청</h3>
+      <p>간단한 정보만 남겨주시면 베타 출시 시 우선 안내드립니다.</p>
+
+      <form id="preorderForm">
+        <div class="form-grid">
+          <div class="field">
+            <label for="name">이름</label>
+            <input type="text" id="name" name="name" placeholder="이름을 입력해주세요" required />
+          </div>
+
+          <div class="field">
+            <label for="email">이메일</label>
+            <input type="email" id="email" name="email" placeholder="example@email.com" required />
+          </div>
+
+          <div class="field">
+            <label for="role">현재 역할</label>
+            <select id="role" name="role" required>
+              <option value="">선택해주세요</option>
+              <option value="대표">대표</option>
+              <option value="무역 담당자">무역 담당자</option>
+              <option value="기타">기타</option>
+            </select>
+          </div>
+
+          <div class="field">
+            <label for="comment">가장 불편한 점 (선택)</label>
+            <textarea id="comment" name="comment" placeholder="예: 국가별 기준 확인에 시간이 너무 오래 걸립니다."></textarea>
+          </div>
+        </div>
+
+        <button type="submit" class="submit-btn">사전 예약 완료하기</button>
+
+        <div class="helper">제출 시 베타 출시 안내를 받을 수 있습니다.</div>
+
+        <div id="successMessage" class="success-message">
+          신청이 완료되었습니다. 출시 시 가장 먼저 안내드리겠습니다.
+        </div>
+
+        <div id="errorMessage" class="error-message">
+          제출 중 문제가 발생했습니다. 잠시 후 다시 시도해주세요.
+        </div>
+      </form>
+    </div>
+  </div>
+
+  <script src="https://cdn.jsdelivr.net/npm/emailjs-com@3/dist/email.min.js"></script>
+  <script>
+    (function () {
+      emailjs.init("1J7lJnbtUQ1dIJPYc");
+    })();
+
+    function openModal() {
+      const overlay = document.getElementById("modalOverlay");
+      overlay.style.display = "flex";
+      requestAnimationFrame(() => overlay.classList.add("open"));
+      document.body.style.overflow = "hidden";
+    }
+
+    function closeModal() {
+      const overlay = document.getElementById("modalOverlay");
+      overlay.classList.remove("open");
+      setTimeout(() => {
+        overlay.style.display = "none";
+      }, 180);
+      document.body.style.overflow = "auto";
+    }
+
+    function handleOverlayClick(event) {
+      if (event.target.id === "modalOverlay") {
+        closeModal();
+      }
+    }
+
+    document.addEventListener("keydown", function (e) {
+      if (e.key === "Escape") {
+        closeModal();
+      }
+    });
+
+    document.getElementById("preorderForm").addEventListener("submit", function (e) {
+      e.preventDefault();
+
+      const name = document.getElementById("name").value;
+      const email = document.getElementById("email").value;
+      const role = document.getElementById("role").value;
+      const message = document.getElementById("comment").value;
+
+      const successMessage = document.getElementById("successMessage");
+      const errorMessage = document.getElementById("errorMessage");
+      const submitBtn = document.querySelector(".submit-btn");
+
+      successMessage.style.display = "none";
+      errorMessage.style.display = "none";
+
+      submitBtn.disabled = true;
+      submitBtn.textContent = "전송 중...";
+
+      emailjs.send("service_4qdaz1f", "template_zubnxab", {
+        name: name,
+        email: email,
+        role: role,
+        message: message
+      })
+      .then(function () {
+        successMessage.style.display = "block";
+        document.getElementById("preorderForm").reset();
+
+        setTimeout(() => {
+          closeModal();
+          successMessage.style.display = "none";
+        }, 1500);
+      })
+      .catch(function () {
+        errorMessage.style.display = "block";
+      })
+      .finally(function () {
+        submitBtn.disabled = false;
+        submitBtn.textContent = "사전 예약 완료하기";
+      });
+    });
+
+    const revealObserver = new IntersectionObserver((entries) => {
+      entries.forEach((entry) => {
+        if (entry.isIntersecting) {
+          entry.target.classList.add("show");
+          revealObserver.unobserve(entry.target);
+        }
+      });
+    }, { threshold: 0.14 });
+
+    document.querySelectorAll(".reveal").forEach((el) => {
+      revealObserver.observe(el);
+    });
+
+    window.addEventListener("load", () => {
+      const progressFill = document.getElementById("progressFill");
+      const progressLabel = document.getElementById("progressLabel");
+      const targetProgress = 92;
+
+      if (progressFill) {
+        setTimeout(() => {
+          progressFill.classList.add("animate");
+        }, 450);
+      }
+
+      let currentProgress = 0;
+      const progressTimer = setInterval(() => {
+        currentProgress += 2;
+        if (currentProgress >= targetProgress) {
+          currentProgress = targetProgress;
+          clearInterval(progressTimer);
+        }
+        if (progressLabel) {
+          progressLabel.textContent = currentProgress + "%";
+        }
+      }, 28);
+
+      const tags = document.querySelectorAll(".line-anim");
+      tags.forEach((tag, index) => {
+        setTimeout(() => {
+          tag.classList.add("show");
+        }, 850 + index * 450);
+      });
+
+      const resultItems = document.querySelectorAll(".result-anim");
+      resultItems.forEach((item, index) => {
+        setTimeout(() => {
+          item.classList.add("show");
+        }, 1200 + index * 280);
+      });
+    });
+
+    function animateCount(el) {
+      const target = Number(el.dataset.target || 0);
+      let current = 0;
+      const increment = Math.max(1, Math.ceil(target / 24));
+
+      const timer = setInterval(() => {
+        current += increment;
+        if (current >= target) {
+          current = target;
+          clearInterval(timer);
+        }
+        el.textContent = current;
+      }, 40);
+    }
+
+    const countObserver = new IntersectionObserver((entries) => {
+      entries.forEach((entry) => {
+        if (entry.isIntersecting && !entry.target.dataset.done) {
+          entry.target.dataset.done = "true";
+          animateCount(entry.target);
+        }
+      });
+    }, { threshold: 0.45 });
+
+    document.querySelectorAll(".count").forEach((el) => {
+      countObserver.observe(el);
+    });
+
+    const heroVisual = document.getElementById("heroVisual");
+    const mockup = document.getElementById("productMockup");
+
+    if (heroVisual && mockup && window.innerWidth > 1024) {
+      heroVisual.addEventListener("mousemove", (e) => {
+        const rect = heroVisual.getBoundingClientRect();
+        const x = e.clientX - rect.left;
+        const y = e.clientY - rect.top;
+
+        const centerX = rect.width / 2;
+        const centerY = rect.height / 2;
+
+        const rotateY = ((x - centerX) / centerX) * 5;
+        const rotateX = ((centerY - y) / centerY) * 4;
+
+        mockup.style.transform =
+          "perspective(1200px) rotateX(" + rotateX + "deg) rotateY(" + rotateY + "deg) translateY(-2px)";
+      });
+
+      heroVisual.addEventListener("mouseleave", () => {
+        mockup.style.transform = "perspective(1200px) rotateX(0deg) rotateY(0deg) translateY(0)";
+      });
+    }
+  </script>
+</body>
+</html>
