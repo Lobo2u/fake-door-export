@@ -1744,9 +1744,10 @@
           successMessage.style.display = "none";
         }, 1500);
       })
-      .catch(function () {
-        errorMessage.style.display = "block";
-      })
+      .catch(function (error) {
+  console.error("EmailJS error:", error);
+  errorMessage.style.display = "block";
+})
       .finally(function () {
         submitBtn.disabled = false;
         submitBtn.textContent = "사전 예약 완료하기";
